@@ -1,6 +1,6 @@
 {
   "name": "ginlibs-chain",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "description": "ts 实现的链表",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
@@ -16,20 +16,19 @@
     "dev": "rollup -c rollup.config.js -w",
     "build": "rollup -c rollup.config.js",
     "commit": "git-cz",
-    "del:lib": "rm -rf lib",
-    "pub": "lerna publish"
+    "del:lib": "rm -rf lib"
   },
   "keywords": [],
   "author": "gintamamadao",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/gintamamadao/gin-libs.git"
+    "url": "git+https://github.com/gintamamadao/ginlibs-chain.git"
   },
   "bugs": {
-    "url": "https://github.com/gintamamadao/gin-libs/issues"
+    "url": "https://github.com/gintamamadao/ginlibs-chain/issues"
   },
-  "homepage": "https://github.com/gintamamadao/gin-libs/#readme",
+  "homepage": "https://github.com/gintamamadao/ginlibs-chain/#readme",
   "devDependencies": {
     "@babel/core": "^7.11.0",
     "@babel/plugin-transform-runtime": "^7.11.5",
