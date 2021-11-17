@@ -9,7 +9,7 @@ import { remove } from './remove'
 import { BaseChain } from './base'
 import { isArray } from 'ginlibs-type-check'
 
-class Chain extends BaseChain {
+export class Chain extends BaseChain {
   public push: typeof push = push
   public pop: typeof pop = pop
   public shift: typeof shift = shift

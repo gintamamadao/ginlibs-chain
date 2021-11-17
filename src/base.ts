@@ -8,13 +8,17 @@ export class BaseChain {
     this.head = new ChainNode('__chain_head__')
   }
 
-  find(value: string | ((value: string) => boolean)) {
+  find(value: string | ChainNode | ((value: string) => boolean)) {
     let curNode = this.head.next
     if (!curNode) {
       return null
     }
     const vailCheck = isFunc(value)
       ? value
+      : value instanceof ChainNode
+      ? (nodeVale: string) => {
+          return nodeVale === value.value
+        }
       : (nodeVale: string) => {
           return nodeVale === value
         }
@@ -30,7 +34,7 @@ export class BaseChain {
     return null
   }
 
-  findNext(anchor: string | ((value: string) => boolean), cnt = 1) {
+  findNext(anchor: string | ChainNode | ((value: string) => boolean), cnt = 1) {
     let curNode = this.find(anchor)
     if (!curNode) {
       return null
@@ -46,13 +50,20 @@ export class BaseChain {
     return null
   }
 
-  findPrevious(anchor: string | ((value: string) => boolean), cnt = 1) {
+  findPrevious(
+    anchor: string | ChainNode | ((value: string) => boolean),
+    cnt = 1
+  ) {
     let curNode = this.head.next
     if (!curNode) {
       return null
     }
     const vailCheck = isFunc(anchor)
       ? anchor
+      : anchor instanceof ChainNode
+      ? (nodeVale: string) => {
+          return nodeVale === anchor.value
+        }
       : (nodeVale: string) => {
           return nodeVale === anchor
         }
