@@ -54,7 +54,9 @@ export class Chain extends BaseChain {
     if (!curNode) {
       return newChain
     }
-    let cloneNode = new ChainNode(curNode.value)
+    let cloneNode = new ChainNode(curNode.value, null, {
+      ...(curNode.payload || {}),
+    })
     newChain.head.next = cloneNode
     while (curNode.next) {
       curNode = curNode.next
