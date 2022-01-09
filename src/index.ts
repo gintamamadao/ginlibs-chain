@@ -272,3 +272,5 @@ export class Chain {
     return this.getNodeKeys()
   }
 }
+
+export default Chain
