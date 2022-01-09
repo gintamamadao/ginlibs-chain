@@ -1,93 +1,74 @@
-import Chain from '../index'
+import { Chain } from '../index'
 
 describe('链表 Chain', () => {
-  test('链表 Chain 查找插入删除节点', () => {
+  // test('链表 Chain push', () => {
+  //   const chain1 = new Chain()
+  //   chain1.push('a')
+  //   expect(chain1.getNodeKeys()).toStrictEqual(expect.objectContaining(['a']))
+
+  //   const chain2 = new Chain()
+  //   chain2.push('a')
+  //   chain2.push('b')
+  //   expect(chain2.getNodeKeys()).toStrictEqual(
+  //     expect.objectContaining(['a', 'b'])
+  //   )
+
+  //   const chain3 = new Chain()
+  //   chain3.push('a')
+  //   chain3.push('b')
+  //   chain3.push('c')
+  //   chain3.push('d')
+  //   expect(chain3.getNodeKeys()).toStrictEqual(
+  //     expect.objectContaining(['a', 'b', 'c', 'd'])
+  //   )
+  // })
+  // test('链表 Chain pushList', () => {
+  //   const chain1 = new Chain()
+  //   chain1.pushList(['a', 'b', 'c'])
+  //   expect(chain1.getNodeKeys()).toStrictEqual(
+  //     expect.objectContaining(['a', 'b', 'c'])
+  //   )
+  // })
+  // test('链表 Chain pop', () => {
+  //   const chain1 = new Chain()
+  //   chain1.pushList(['a', 'b', 'c'])
+  //   chain1.pop()
+  //   expect(chain1.getNodeKeys()).toStrictEqual(
+  //     expect.objectContaining(['a', 'b'])
+  //   )
+  //   chain1.pop()
+  //   expect(chain1.getNodeKeys()).toStrictEqual(expect.objectContaining(['a']))
+  // })
+  // test('链表 Chain pushList', () => {
+  //   const chain1 = new Chain()
+  //   chain1.unshift('a')
+  //   chain1.unshift('b')
+  //   expect(chain1.getNodeKeys()).toStrictEqual(
+  //     expect.objectContaining(['b', 'a'])
+  //   )
+
+  //   const chain2 = new Chain()
+  //   chain2.unshiftList(['a', 'b', 'c'])
+  //   expect(chain2.getNodeKeys()).toStrictEqual(
+  //     expect.objectContaining(['c', 'b', 'a'])
+  //   )
+  // })
+  // test('链表 Chain shift', () => {
+  //   const chain1 = new Chain()
+  //   chain1.pushList(['a', 'b', 'c'])
+  //   chain1.shift()
+  //   expect(chain1.getNodeKeys()).toStrictEqual(
+  //     expect.objectContaining(['b', 'c'])
+  //   )
+  //   chain1.shift()
+  //   expect(chain1.getNodeKeys()).toStrictEqual(expect.objectContaining(['c']))
+  // })
+  test('链表 Chain findNext', () => {
     const chain1 = new Chain()
-    chain1.push('a')
-    chain1.push('b')
-    chain1.push('c')
-    expect(chain1.getNodeValues()).toStrictEqual(
-      expect.objectContaining(['a', 'b', 'c'])
-    )
-
-    const popNode = chain1.pop()
-    expect(chain1.getNodeValues()).toStrictEqual(
-      expect.objectContaining(['a', 'b'])
-    )
-    expect(popNode?.value).toBe('c')
-
-    chain1.unshift('a1')
-    expect(chain1.getNodeValues()).toStrictEqual(
-      expect.objectContaining(['a1', 'a', 'b'])
-    )
-
-    const shiftNode = chain1.shift()
-    expect(chain1.getNodeValues()).toStrictEqual(
-      expect.objectContaining(['a', 'b'])
-    )
-    expect(shiftNode?.value).toBe('a1')
-
-    chain1.insertBefore('b1', 'b')
-    expect(chain1.getNodeValues()).toStrictEqual(
-      expect.objectContaining(['a', 'b1', 'b'])
-    )
-
-    chain1.insertAfter('a2', 'a')
-    expect(chain1.getNodeValues()).toStrictEqual(
-      expect.objectContaining(['a', 'a2', 'b1', 'b'])
-    )
-
-    expect(chain1.find('a')?.value).toBe('a')
-
-    expect(chain1.findPrevious('b')?.value).toBe('b1')
-    expect(chain1.findPrevious('b', 2)?.value).toBe('a2')
-    expect(chain1.findPrevious('b', 3)?.value).toBe('a')
-
-    expect(chain1.findNext('a')?.value).toBe('a2')
-    expect(chain1.findNext('a', 2)?.value).toBe('b1')
-    expect(chain1.findNext('a', 3)?.value).toBe('b')
-
-    chain1.remove('a2')
-    chain1.remove('b1')
-    expect(chain1.getNodeValues()).toStrictEqual(
-      expect.objectContaining(['a', 'b'])
-    )
-  })
-  test('链表 Chain init', () => {
-    const chain2 = new Chain(['1', '2', '3'])
-    expect(chain2.getNodeValues()).toStrictEqual(
-      expect.objectContaining(['1', '2', '3'])
-    )
-
-    const chain3 = new Chain(chain2.getFirstNode())
-    expect(chain3.getNodeValues()).toStrictEqual(
-      expect.objectContaining(['1', '2', '3'])
-    )
-
-    const chain4 = chain3.clone()
-    chain4.push('4')
-    expect(chain3.getNodeValues()).toStrictEqual(
-      expect.objectContaining(['1', '2', '3'])
-    )
-    expect(chain4.getNodeValues()).toStrictEqual(
-      expect.objectContaining(['1', '2', '3', '4'])
-    )
-
-    // expect(chain4.length).toBe(4)
-    expect(chain4.checkLength()).toBe(4)
-  })
-  test('链表 insertBefore', () => {
-    const chain5 = new Chain(['a'])
-    chain5.insertBefore('a1', 'a')
-    expect(chain5.getNodeValues()).toStrictEqual(
-      expect.objectContaining(['a1', 'a'])
-    )
-  })
-  test('链表 insertAfter', () => {
-    const chain5 = new Chain(['a'])
-    chain5.insertAfter('a2', 'a')
-    expect(chain5.getNodeValues()).toStrictEqual(
-      expect.objectContaining(['a', 'a2'])
-    )
+    chain1.pushList(['a', 'b', 'c', 'd'])
+    expect(chain1.findNext().key).toStrictEqual('a')
+    expect(chain1.findNext('a').key).toStrictEqual('b')
+    expect(chain1.findNext('b').key).toStrictEqual('c')
+    expect(chain1.findNext('c').key).toStrictEqual('d')
   })
 })

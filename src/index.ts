@@ -142,11 +142,11 @@ export class Chain {
     return nextNode
   }
 
-  findNext = (anchor: string | ChainNode, n: number = 1) => {
+  findNext = (anchor: string | ChainNode = this.getHead(), n: number = 1) => {
     let curNode: any = this.find(anchor)
     for (let i = 0; i < n; i++) {
       curNode = curNode?.next
-      if (!curNode || !this.isChainNode(curNode.next)) {
+      if (!curNode || !this.isChainNode(curNode)) {
         return null
       }
     }
