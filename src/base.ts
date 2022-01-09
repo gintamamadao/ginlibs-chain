@@ -29,9 +29,32 @@ export class BaseChain {
     return this.chainHash === node.chainHash
   }
 
+  find = (anchor: string | ChainNode) => {
+    let anchorKey = isString(anchor) ? anchor : anchor.key
+    let curNode = this.getHead()
+    if (curNode?.key === anchorKey && this.isChainNode(curNode)) {
+      return curNode
+    }
+    const keyList: string[] = []
+    while (curNode?.next && this.isChainNode(curNode.next)) {
+      curNode = curNode.next
+      if (curNode.key === anchorKey) {
+        return curNode
+      }
+      if (checkIsInfiniteLoop(curNode.key, keyList)) {
+        return
+      }
+      keyList.push(curNode.key)
+    }
+    return null
+  }
+
   push = (key: string, payload: any = null) => {
     const node = new ChainNode(key, payload)
     node.chainHash = this.chainHash
+    if (this.find(node)) {
+      throw new Error('Error: Node exist!')
+    }
     let curNode = this.getHead()
     const keyList: string[] = []
     while (curNode?.next && this.isChainNode(curNode.next)) {
@@ -65,24 +88,33 @@ export class BaseChain {
     return curNode
   }
 
-  find = (anchor: string | ChainNode) => {
-    let anchorKey = isString(anchor) ? anchor : anchor.key
-    let curNode = this.getHead()
-    if (curNode?.key === anchorKey && this.isChainNode(curNode)) {
-      return curNode
+  unshift = (key: string, payload: any = null) => {
+    const node = new ChainNode(key, payload)
+    node.chainHash = this.chainHash
+    if (this.find(node)) {
+      throw new Error('Error: Node exist!')
     }
-    const keyList: string[] = []
-    while (curNode?.next && this.isChainNode(curNode.next)) {
-      curNode = curNode.next
-      if (curNode.key === anchorKey) {
-        return curNode
-      }
-      if (checkIsInfiniteLoop(curNode.key, keyList)) {
-        return
-      }
-      keyList.push(curNode.key)
+    let head = this.getHead()
+    let nextNode = head.next
+    head.next = node
+    if (this.isChainNode(nextNode)) {
+      node.next = nextNode
     }
-    return null
+  }
+
+  shift = () => {
+    const head = this.getHead()
+    const nextNode = head.next
+    if (!nextNode || !this.isChainNode(nextNode)) {
+      head.next = null
+      return null
+    }
+    if (nextNode.next && this.isChainNode(nextNode.next)) {
+      head.next = nextNode.next
+    } else {
+      head.next = null
+    }
+    return nextNode
   }
 
   findNext = (anchor: string | ChainNode, n: number = 1) => {

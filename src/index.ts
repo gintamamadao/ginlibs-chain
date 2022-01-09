@@ -1,14 +1,10 @@
 import { ChainNode } from './node'
-import { shift } from './shift'
-import { unshift } from './unshift'
 import { insertAfter } from './insertAfter'
 import { insertBefore } from './insertBefore'
 import { BaseChain } from './base'
 import { isArray } from 'ginlibs-type-check'
 
 export class Chain extends BaseChain {
-  public shift: typeof shift = shift
-  public unshift: typeof unshift = unshift
   public insertAfter: typeof insertAfter = insertAfter
   public insertBefore: typeof insertBefore = insertBefore
 
