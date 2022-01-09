@@ -1,22 +1,16 @@
 import { ChainNode } from './node'
-import { push } from './push'
-import { pop } from './pop'
 import { shift } from './shift'
 import { unshift } from './unshift'
 import { insertAfter } from './insertAfter'
 import { insertBefore } from './insertBefore'
-import { remove } from './remove'
 import { BaseChain } from './base'
 import { isArray } from 'ginlibs-type-check'
 
 export class Chain extends BaseChain {
-  public push: typeof push = push
-  public pop: typeof pop = pop
   public shift: typeof shift = shift
   public unshift: typeof unshift = unshift
   public insertAfter: typeof insertAfter = insertAfter
   public insertBefore: typeof insertBefore = insertBefore
-  public remove: typeof remove = remove
 
   constructor(node?: ChainNode | string[] | null) {
     super()
