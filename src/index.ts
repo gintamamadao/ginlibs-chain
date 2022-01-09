@@ -260,7 +260,6 @@ export class Chain {
     keyList.push(curNode.key)
     while (curNode.next && this.isChainNode(curNode.next)) {
       curNode = curNode.next
-      keyList.push(curNode.key)
       if (checkIsInfiniteLoop(curNode.key, keyList)) {
         return
       }
