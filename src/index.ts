@@ -2,6 +2,11 @@ import { ChainNode } from './node'
 import { isString } from 'ginlibs-type-check'
 import { randomStr } from 'ginlibs-utils'
 
+interface NodeInfo {
+  key: string
+  payload?: any
+}
+
 const checkIsInfiniteLoop = (key, keyList) => {
   if (keyList.length > 10000 && keyList.includes(key)) {
     throw new Error('Error: Infinite Loop Chain!')
@@ -66,6 +71,26 @@ export class Chain {
     }
     curNode.next = node
     return this
+  }
+
+  pushList = (keys: string[] | NodeInfo[] | ChainNode[]) => {
+    for (const it of keys) {
+      if (isString(it)) {
+        this.push(it)
+      } else {
+        this.push(it.key, it.payload)
+      }
+    }
+  }
+
+  unshiftList = (keys: string[] | NodeInfo[] | ChainNode[]) => {
+    for (const it of keys) {
+      if (isString(it)) {
+        this.unshift(it)
+      } else {
+        this.unshift(it.key, it.payload)
+      }
+    }
   }
 
   pop = () => {
