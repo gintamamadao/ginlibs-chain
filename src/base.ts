@@ -1,6 +1,13 @@
 import { ChainNode } from './node'
-import { isFunc, isString } from 'ginlibs-type-check'
+import { isString } from 'ginlibs-type-check'
 import { randomStr } from 'ginlibs-utils'
+
+const checkIsInfiniteLoop = (key, keyList) => {
+  if (keyList.length > 10000 && keyList.includes(key)) {
+    throw new Error('invalid chain')
+  }
+  return false
+}
 
 export class BaseChain {
   private chainHash = randomStr()
@@ -9,23 +16,28 @@ export class BaseChain {
   public length = 0
   constructor() {
     this.head = new ChainNode(this.headKey)
-    this.head.chainKey = this.getChainKey(this.headKey)
+    this.head.chainHash = this.chainHash
   }
 
   getHead() {
     return this.head
   }
 
-  getChainKey = (key: string) => {
-    return key + this.chainHash
+  isChainNode(node: ChainNode) {
+    return this.chainHash === node.chainHash
   }
 
   push = (key: string, payload: any = null) => {
     const node = new ChainNode(key, payload)
-    node.chainKey = this.getChainKey(key)
+    node.chainHash = this.chainHash
     let curNode = this.getHead()
-    while (curNode?.next) {
+    const keyList: string[] = []
+    while (curNode?.next && this.isChainNode(curNode.next)) {
       curNode = curNode.next
+      if (checkIsInfiniteLoop(curNode.key, keyList)) {
+        return
+      }
+      keyList.push(curNode.key)
     }
     curNode.next = node
     this.length++
@@ -34,19 +46,20 @@ export class BaseChain {
 
   find = (anchor: string | ChainNode) => {
     let anchorKey = isString(anchor) ? anchor : anchor.key
-    let aChainKey = this.getChainKey(anchorKey)
-    let curNode = this.getHead().next
-    if (!curNode) {
-      return null
-    }
-    if (curNode.chainKey === aChainKey) {
+    let curNode = this.getHead()
+    if (curNode?.key === anchorKey) {
       return curNode
     }
-    while (curNode.next) {
+    const keyList: string[] = []
+    while (curNode?.next && this.isChainNode(curNode.next)) {
       curNode = curNode.next
-      if (curNode.chainKey === aChainKey) {
+      if (curNode.key === anchorKey) {
         return curNode
       }
+      if (checkIsInfiniteLoop(curNode.key, keyList)) {
+        return
+      }
+      keyList.push(curNode.key)
     }
     return null
   }
@@ -55,7 +68,7 @@ export class BaseChain {
     let curNode: any = this.find(anchor)
     for (let i = 0; i < n; i++) {
       curNode = curNode?.next
-      if (!curNode) {
+      if (!curNode || !this.isChainNode(curNode.next)) {
         return null
       }
     }
@@ -72,12 +85,17 @@ export class BaseChain {
       return null
     }
     const prevNodeList: ChainNode[] = []
-    while (curNode.next) {
+    const keyList: string[] = []
+    while (curNode.next && this.isChainNode(curNode.next)) {
       prevNodeList.unshift(curNode)
       curNode = curNode.next
-      if (curNode.chainKey === anchorNode.chainKey) {
+      if (curNode.key === anchorNode.key) {
         return prevNodeList[n - 1] ? prevNodeList[n - 1] : null
       }
+      if (checkIsInfiniteLoop(curNode.key, keyList)) {
+        return
+      }
+      keyList.push(curNode.key)
     }
     return null
   }
@@ -98,14 +116,19 @@ export class BaseChain {
 
   checkLength() {
     let len = 0
-    let curNode = this.getHead().next
-    if (!curNode) {
+    let curNode = this.getHead()
+    if (!curNode.next) {
       return len
     }
     len++
-    while (curNode.next) {
+    const keyList: string[] = []
+    while (curNode.next && this.isChainNode(curNode.next)) {
       curNode = curNode.next
       len++
+      if (checkIsInfiniteLoop(curNode.key, keyList)) {
+        return
+      }
+      keyList.push(curNode.key)
     }
     this.length = len
     return len
