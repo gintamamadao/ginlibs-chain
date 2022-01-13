@@ -1,7 +1,7 @@
 {
   "name": "ginlibs-chain",
   "version": "1.0.1",
-  "description": "ts 实现的链表",
+  "description": "implement chain with TS",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
   "files": [
@@ -18,7 +18,9 @@
     "commit": "git-cz",
     "del:lib": "rm -rf lib"
   },
-  "keywords": [],
+  "keywords": [
+    "chain"
+  ],
   "author": "gintamamadao",
   "license": "MIT",
   "repository": {
