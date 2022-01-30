@@ -17,17 +17,17 @@ const checkIsInfiniteLoop = (key, keyList) => {
 export class Chain {
   private chainHash = randomStr()
   private head: ChainNode
-  public headKey: string = '__chain_head__'
+  public headKey = '__chain_head__'
   constructor() {
     this.head = new ChainNode(this.headKey)
     this.head.chainHash = this.chainHash
   }
 
-  getHead() {
+  getHead = () => {
     return this.head
   }
 
-  isChainNode(node: ChainNode) {
+  isChainNode = (node: ChainNode) => {
     if (!node || !node.chainHash) {
       return false
     }
@@ -35,7 +35,7 @@ export class Chain {
   }
 
   find = (anchor: string | ChainNode) => {
-    let anchorKey = isString(anchor) ? anchor : anchor.key
+    const anchorKey = isString(anchor) ? anchor : anchor.key
     let curNode = this.getHead()
     if (curNode?.key === anchorKey && this.isChainNode(curNode)) {
       return curNode
@@ -119,8 +119,8 @@ export class Chain {
     if (this.find(node)) {
       throw new Error('Error: Node exist!')
     }
-    let head = this.getHead()
-    let nextNode = head.next
+    const head = this.getHead()
+    const nextNode = head.next
     head.next = node
     if (this.isChainNode(nextNode)) {
       node.next = nextNode
@@ -142,7 +142,7 @@ export class Chain {
     return nextNode
   }
 
-  findNext = (anchor: string | ChainNode = this.getHead(), n: number = 1) => {
+  findNext = (anchor: string | ChainNode = this.getHead(), n = 1) => {
     let curNode: any = this.find(anchor)
     for (let i = 0; i < n; i++) {
       curNode = curNode?.next
@@ -154,7 +154,7 @@ export class Chain {
   }
 
   findPrevious = (anchor: string | ChainNode, n = 1) => {
-    let anchorNode: ChainNode | null = this.find(anchor)
+    const anchorNode: ChainNode | null = this.find(anchor)
     if (!anchorNode) {
       return null
     }
@@ -272,5 +272,3 @@ export class Chain {
     return this.getNodeKeys()
   }
 }
-
-export default Chain
