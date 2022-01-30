@@ -269,6 +269,6 @@ export class Chain {
   }
 
   checkLength = () => {
-    return this.getNodeKeys()
+    return this.getNodeKeys().length
   }
 }
