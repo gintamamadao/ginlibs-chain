@@ -8,10 +8,8 @@ import addDts from 'rollup-plugin-add-global-ts'
 
 const babelOpt = {
   extensions: ['.js', '.ts'],
-  babelHelpers: 'runtime',
   exclude: 'node_modules/**',
   include: ['src/**/*'],
-  plugins: ['@babel/plugin-transform-runtime'],
   presets: [
     [
       '@babel/preset-env',
